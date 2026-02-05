@@ -1,0 +1,1046 @@
+{
+    "topic": "Bengali Food",
+    "week": "Week 1",
+    "lastUpdated": "2026-02-05",
+    "description": "Test your knowledge about Bengali Food",
+    "totalQuestions": 80,
+    "questionsPerGame": 20,
+    "rounds": [
+        {
+            "round": 1,
+            "difficulty": "Hard",
+            "questions": [
+                {
+                    "question": "Which specific variety of rice is traditionally used to prepare the Bengali sweet 'Nolen Gur'er Payesh' during winter?",
+                    "options": [
+                        "Gobindobhog",
+                        "Sona Masuri",
+                        "Ambemohar",
+                        "Basmati"
+                    ],
+                    "correct": 0,
+                    "points": 10,
+                    "fact": "Gobindobhog is a short-grained, aromatic rice grown in West Bengal, cherished for its flavour in traditional sweets."
+                },
+                {
+                    "question": "The famous 'Kosha Mangsho' from Bengal is typically cooked with which cut of meat for authentic flavour and texture?",
+                    "options": [
+                        "Pork belly",
+                        "Beef brisket",
+                        "Mutton shoulder",
+                        "Chicken breast"
+                    ],
+                    "correct": 2,
+                    "points": 10,
+                    "fact": "Kosha Mangsho is best prepared with mutton shoulder for its marbling, which ensures tenderness after slow cooking."
+                },
+                {
+                    "question": "Which indigenous leafy vegetable, often eaten with posto (poppy seed paste), is called 'Pui Shaak' in Bengal?",
+                    "options": [
+                        "Fenugreek leaves",
+                        "Malabar spinach",
+                        "Amaranth greens",
+                        "Spinach"
+                    ],
+                    "correct": 1,
+                    "points": 10,
+                    "fact": "Pui Shaak, or Malabar spinach, is a thick, mucilaginous green commonly cooked with poppy seed or fish in Bengali cuisine."
+                },
+                {
+                    "question": "Which rare fish, prized in Bengali cuisine and often cooked with mustard, is known as 'Bhetki'?",
+                    "options": [
+                        "Tilapia",
+                        "Katla",
+                        "Barramundi",
+                        "Rohu"
+                    ],
+                    "correct": 2,
+                    "points": 10,
+                    "fact": "Bhetki, or Asian seabass, is a delicate white fish celebrated in Bengali recipes like Bhetki Paturi."
+                },
+                {
+                    "question": "The sweet 'Sarbhaja' originated in which historic town of Bengal, famous for its layered milk-based confections?",
+                    "options": [
+                        "Jalpaiguri",
+                        "Krishnanagar",
+                        "Burdwan",
+                        "Bankura"
+                    ],
+                    "correct": 1,
+                    "points": 10,
+                    "fact": "Krishnanagar is celebrated for Sarbhaja, a sweet made from layers of milk cream deep-fried and soaked in syrup."
+                },
+                {
+                    "question": "Which Bengali dish involves steaming fish wrapped in banana leaves with a marinade of mustard and coconut?",
+                    "options": [
+                        "Sorshe Ilish",
+                        "Paturi",
+                        "Doi Maach",
+                        "Chingri Malaikari"
+                    ],
+                    "correct": 1,
+                    "points": 10,
+                    "fact": "Paturi is a traditional technique where marinated fish is wrapped in banana leaves and steamed or grilled."
+                },
+                {
+                    "question": "What is the primary ingredient in the Bengali snack 'Mochar Chop'?",
+                    "options": [
+                        "Green peas",
+                        "Potato",
+                        "Pumpkin flowers",
+                        "Banana blossom"
+                    ],
+                    "correct": 3,
+                    "points": 10,
+                    "fact": "Mochar Chop uses banana flower, finely chopped and spiced, then battered and fried, creating a unique vegetarian delicacy."
+                },
+                {
+                    "question": "Which variant of 'Panta Bhaat', a fermented rice dish, is traditionally consumed in rural Bengal to beat the summer heat?",
+                    "options": [
+                        "Cooked with jaggery",
+                        "Soaked with water overnight",
+                        "Mixed with coconut milk",
+                        "Served with fried onions"
+                    ],
+                    "correct": 1,
+                    "points": 10,
+                    "fact": "Panta Bhaat is made by soaking cooked rice in water overnight, creating a mildly sour, cooling meal ideal for summer."
+                },
+                {
+                    "question": "What is the distinctive flavouring agent in the Bengali sweet 'Kheer Kadam'?",
+                    "options": [
+                        "Nutmeg",
+                        "Rosewater",
+                        "Saffron",
+                        "Cardamom"
+                    ],
+                    "correct": 3,
+                    "points": 10,
+                    "fact": "Cardamom is used in Kheer Kadam, which consists of a rasgulla centre surrounded by khoya and scented with cardamom."
+                },
+                {
+                    "question": "Which rare wild edible flower, locally called 'Sojne Phool', is cooked as a delicacy in Bengal?",
+                    "options": [
+                        "Pumpkin flowers",
+                        "Drumstick flowers",
+                        "Sesame flowers",
+                        "Banana flowers"
+                    ],
+                    "correct": 1,
+                    "points": 10,
+                    "fact": "Sojne Phool refers to drumstick tree (moringa) blossoms, which are briefly sautéed with spices for a seasonal treat."
+                },
+                {
+                    "question": "Which unique Bengali preparation uses fermented bamboo shoots as a key ingredient, particularly among the Rajbongshi community?",
+                    "options": [
+                        "Kumro Pata Chingri",
+                        "Chorchori",
+                        "Kumro Chingri",
+                        "Khorisa"
+                    ],
+                    "correct": 3,
+                    "points": 10,
+                    "fact": "Khorisa is a delicacy using fermented bamboo shoots, known for its tangy aroma and favoured in North Bengal's Rajbongshi cuisine."
+                },
+                {
+                    "question": "In 'Aloo Posto', what is the traditional method for preparing the poppy seed paste?",
+                    "options": [
+                        "Sundrying then powdering",
+                        "Blender mixing",
+                        "Stone grinding",
+                        "Crushing with pestle"
+                    ],
+                    "correct": 2,
+                    "points": 10,
+                    "fact": "For authentic flavour, poppy seeds are ground on a shil nora, a traditional stone grinder, with minimal water."
+                },
+                {
+                    "question": "Which river fish, highly valued in Bengali cuisine, is known for its abundance in the Ganges delta and often cooked with eggplant?",
+                    "options": [
+                        "Tangra",
+                        "Magur",
+                        "Pabda",
+                        "Hilsa"
+                    ],
+                    "correct": 2,
+                    "points": 10,
+                    "fact": "Pabda is a delicate river fish often paired with eggplant in light, mustard-based gravies in Bengal."
+                },
+                {
+                    "question": "The technique of 'Bhapa' in Bengali cooking refers to which process?",
+                    "options": [
+                        "Deep frying",
+                        "Steaming",
+                        "Fermenting",
+                        "Slow roasting"
+                    ],
+                    "correct": 1,
+                    "points": 10,
+                    "fact": "Bhapa means steaming; dishes like Bhapa Ilish are prepared by steaming fish with spices and mustard paste."
+                },
+                {
+                    "question": "Which classic Bengali chutney is made using 'Aamsotto' as a key component?",
+                    "options": [
+                        "Aam kasundi",
+                        "Tomato chutney",
+                        "Mango pickle",
+                        "Aamsotto chutney"
+                    ],
+                    "correct": 3,
+                    "points": 10,
+                    "fact": "Aamsotto is sun-dried mango pulp, used to make a sweet-tangy chutney, often served at the end of a Bengali meal."
+                },
+                {
+                    "question": "What is the main ingredient of the traditional Bengali dessert 'Pantua', which distinguishes it from 'Rasgulla'?",
+                    "options": [
+                        "Semolina",
+                        "Sago",
+                        "Khoa",
+                        "Corn flour"
+                    ],
+                    "correct": 2,
+                    "points": 10,
+                    "fact": "Pantua uses chhana and khoya, giving it a richer and denser taste compared to the pure chhana-based Rasgulla."
+                },
+                {
+                    "question": "Which West Bengal district is famous for its unique 'Sitabhog' sweet resembling rice grains?",
+                    "options": [
+                        "Hooghly",
+                        "Birbhum",
+                        "Malda",
+                        "Burdwan"
+                    ],
+                    "correct": 3,
+                    "points": 10,
+                    "fact": "Sitabhog, a signature sweet of Burdwan, is crafted from rice flour and cottage cheese, shaped like rice and sweetened."
+                },
+                {
+                    "question": "What is the traditional base for the Bengali dish 'Shukto', giving it its signature bitterness?",
+                    "options": [
+                        "Neem leaves",
+                        "Bitter gourd",
+                        "Fenugreek seeds",
+                        "Eggplant"
+                    ],
+                    "correct": 1,
+                    "points": 10,
+                    "fact": "Bitter gourd forms the core of Shukto, a medley of vegetables cooked with subtle spices and milk."
+                },
+                {
+                    "question": "Which aromatic spice blend, unique to Bengali cuisine, is called 'Panch Phoron'?",
+                    "options": [
+                        "Five-seed mix",
+                        "Chaat masala",
+                        "Garam masala",
+                        "Bhaja masala"
+                    ],
+                    "correct": 0,
+                    "points": 10,
+                    "fact": "Panch Phoron is a combination of five whole spices: cumin, nigella, fenugreek, fennel, and mustard seeds."
+                },
+                {
+                    "question": "What is the core ingredient of 'Chhanar Dalna', a popular vegetarian curry in Bengal?",
+                    "options": [
+                        "Green peas",
+                        "Paneer",
+                        "Jackfruit",
+                        "Fresh cottage cheese"
+                    ],
+                    "correct": 3,
+                    "points": 10,
+                    "fact": "Chhanar Dalna is a classic Bengali dish made with chhana, or freshly curdled milk cheese, simmered in a tomato-based gravy."
+                },
+                {
+                    "question": "Which rare mango-based Bengali pickle is known for its pungency due to the addition of black mustard paste?",
+                    "options": [
+                        "Aam Kasundi",
+                        "Aam Murabba",
+                        "Aam Tel",
+                        "Aam Chutney"
+                    ],
+                    "correct": 0,
+                    "points": 10,
+                    "fact": "Aam Kasundi blends raw mangoes with black mustard seeds, resulting in a fiery, tangy pickle unique to Bengal."
+                },
+                {
+                    "question": "Which famous Kolkata snack, originally from Chinatown, is known for its deep-fried roll with a spiced filling?",
+                    "options": [
+                        "Kathi Roll",
+                        "Kolkata Roll",
+                        "Kobiraji Cutlet",
+                        "Moglai Paratha"
+                    ],
+                    "correct": 2,
+                    "points": 10,
+                    "fact": "Kobiraji Cutlet, with its crunchy egg net coating, is an Anglo-Bengali-Chinese fusion snack from Kolkata's colonial era."
+                },
+                {
+                    "question": "What is the main distinguishing ingredient in a 'Radhaballavi' compared to a regular 'Luchi'?",
+                    "options": [
+                        "Ghee",
+                        "Semolina",
+                        "Urad dal stuffing",
+                        "Fennel seeds"
+                    ],
+                    "correct": 2,
+                    "points": 10,
+                    "fact": "Radhaballavi is a deep-fried bread stuffed with a spiced urad dal paste, unlike the plain flour luchi."
+                },
+                {
+                    "question": "Which classic Bengali sweet is made by reducing milk into thick layers, then sweetened and cut into squares?",
+                    "options": [
+                        "Kalakand",
+                        "Chhanar Jilipi",
+                        "Malai Chop",
+                        "Sandesh"
+                    ],
+                    "correct": 0,
+                    "points": 10,
+                    "fact": "Kalakand is a milk-based sweet prepared by condensing milk and splitting it with acid, then sweetening and setting."
+                },
+                {
+                    "question": "The 'Bengali Five-Spice' used in tempering dishes is made without which of the following spices?",
+                    "options": [
+                        "Coriander seeds",
+                        "Nigella seeds",
+                        "Mustard seeds",
+                        "Fennel seeds"
+                    ],
+                    "correct": 0,
+                    "points": 10,
+                    "fact": "Coriander seeds are not part of Panch Phoron; the blend uses fennel, nigella, cumin, fenugreek, and mustard seeds."
+                },
+                {
+                    "question": "Which indigenous variety of lentil is preferred for making 'Musur Dal' in Bengal?",
+                    "options": [
+                        "Black gram",
+                        "Red lentil",
+                        "Split chickpea",
+                        "Yellow moong dal"
+                    ],
+                    "correct": 1,
+                    "points": 10,
+                    "fact": "Musur Dal refers to red lentils, a staple in Bengali homes, often cooked thin and tempered with ghee and spices."
+                },
+                {
+                    "question": "What is the key souring agent in the Bengali fish curry known as 'Macher Tok'?",
+                    "options": [
+                        "Raw mango",
+                        "Tomato",
+                        "Tamarind pulp",
+                        "Lemon juice"
+                    ],
+                    "correct": 0,
+                    "points": 10,
+                    "fact": "Raw mango is used in Macher Tok during its season, imparting a refreshing tartness to the light fish curry."
+                },
+                {
+                    "question": "Which sweet delicacy from Bengal is made by soaking cottage cheese balls in rose-flavoured sugar syrup?",
+                    "options": [
+                        "Rasgulla",
+                        "Pantua",
+                        "Malai Chamcham",
+                        "Rajbhog"
+                    ],
+                    "correct": 0,
+                    "points": 10,
+                    "fact": "Rasgulla, invented in Bengal, is made from chhana balls boiled and soaked in light sugar syrup, often scented with rose."
+                },
+                {
+                    "question": "Which uncommon leafy green, called 'Kolmi Shaak', is popular in rural Bengali cuisine?",
+                    "options": [
+                        "Radish leaves",
+                        "Coriander",
+                        "Water spinach",
+                        "Amaranth"
+                    ],
+                    "correct": 2,
+                    "points": 10,
+                    "fact": "Kolmi Shaak is water spinach, a nutritious green that grows abundantly in Bengal’s wetlands and is eaten stir-fried."
+                },
+                {
+                    "question": "The dish 'Labra', commonly served at Durga Puja, is best described as which kind of preparation?",
+                    "options": [
+                        "Mixed vegetable curry",
+                        "Stuffed paratha",
+                        "Spiced lentil soup",
+                        "Fried fish platter"
+                    ],
+                    "correct": 0,
+                    "points": 10,
+                    "fact": "Labra is a medley of seasonal vegetables mildly spiced, traditionally served with khichuri during Durga Puja."
+                },
+                {
+                    "question": "Which variety of prawn is preferred for making the classic 'Chingri Malaikari'?",
+                    "options": [
+                        "Bagda chingri",
+                        "Kucho chingri",
+                        "Jhinga",
+                        "Golda chingri"
+                    ],
+                    "correct": 3,
+                    "points": 10,
+                    "fact": "Golda chingri, or freshwater giant prawns, are favoured for their sweet flavour and meaty texture in Chingri Malaikari."
+                },
+                {
+                    "question": "Which sweetener, apart from refined sugar, is traditionally used in Bengali sweets during winter months?",
+                    "options": [
+                        "Honey",
+                        "Maple syrup",
+                        "Cane sugar",
+                        "Date palm jaggery"
+                    ],
+                    "correct": 3,
+                    "points": 10,
+                    "fact": "Date palm jaggery, or nolen gur, is a seasonal delicacy used in winter for sweets like sandesh and payesh."
+                },
+                {
+                    "question": "Which Kolkata neighbourhood is famed for its heritage 'Chinese breakfast', featuring dishes like steamed bao and fish balls?",
+                    "options": [
+                        "College Street",
+                        "Tiretta Bazaar",
+                        "Lake Market",
+                        "Gariahat"
+                    ],
+                    "correct": 1,
+                    "points": 10,
+                    "fact": "Tiretta Bazaar is known for its early morning Chinese breakfast stalls, a legacy of Kolkata’s Chinese community."
+                },
+                {
+                    "question": "What is the main filling in a Bengali 'Shingara' during winter, making it distinct from the North Indian samosa?",
+                    "options": [
+                        "Cauliflower",
+                        "Groundnut",
+                        "Green peas",
+                        "Paneer"
+                    ],
+                    "correct": 0,
+                    "points": 10,
+                    "fact": "Shingara often features a cauliflower and potato filling, especially in winter when fresh cauliflower is abundant."
+                },
+                {
+                    "question": "Which unique spice is a signature in the Bengali 'Muri Ghonto', a dish made with fish head and rice?",
+                    "options": [
+                        "Clove",
+                        "Star anise",
+                        "Bay leaf",
+                        "Cinnamon"
+                    ],
+                    "correct": 2,
+                    "points": 10,
+                    "fact": "Bay leaf is a defining spice in Muri Ghonto, adding aroma to the heady mix of rice and fish head."
+                },
+                {
+                    "question": "Which obscure pulse is used in 'Motor Dal'er Bora', a crispy snack from Bengal?",
+                    "options": [
+                        "Kidney bean",
+                        "Yellow pea",
+                        "Red lentil",
+                        "Split black gram"
+                    ],
+                    "correct": 1,
+                    "points": 10,
+                    "fact": "Motor Dal boras are fritters made from yellow peas, soaked and ground with spices before deep frying."
+                },
+                {
+                    "question": "Which traditional Bengali dish features a stuffing of coconut and jaggery inside rice flour dumplings?",
+                    "options": [
+                        "Chomchom",
+                        "Pithe",
+                        "Kheer Kadam",
+                        "Langcha"
+                    ],
+                    "correct": 1,
+                    "points": 10,
+                    "fact": "Pithe are festival dumplings with coconut-jaggery filling, especially prepared during Makar Sankranti."
+                },
+                {
+                    "question": "Which handmade, sun-dried snack is made from ground lentils and shaped into small cones before being dried on rooftops?",
+                    "options": [
+                        "Bori",
+                        "Mathri",
+                        "Papad",
+                        "Chakli"
+                    ],
+                    "correct": 0,
+                    "points": 10,
+                    "fact": "Bori are lentil paste confections dried in the sun, an age-old Bengali tradition to preserve protein-rich snacks."
+                },
+                {
+                    "question": "Which distinctive Bengali spice paste is essential in the preparation of 'Dhokar Dalna'?",
+                    "options": [
+                        "Mustard paste",
+                        "Garlic paste",
+                        "Kasundi",
+                        "Ginger-cumin paste"
+                    ],
+                    "correct": 3,
+                    "points": 10,
+                    "fact": "Dhokar Dalna employs a ginger-cumin paste for its robust flavour, complementing the lentil cakes in gravy."
+                },
+                {
+                    "question": "Which preparation technique gives 'Bhapa Doi' its unique texture and flavour?",
+                    "options": [
+                        "Sun-drying",
+                        "Baking in oven",
+                        "Frying in ghee",
+                        "Steaming sweetened curd"
+                    ],
+                    "correct": 3,
+                    "points": 10,
+                    "fact": "Bhapa Doi is made by steaming sweetened yoghurt, resulting in a thick, creamy dessert."
+                },
+                {
+                    "question": "Which salt-cured dried fish, pungent and salty, is a delicacy among some Bengali households?",
+                    "options": [
+                        "Tangra Maach",
+                        "Pabda Maach",
+                        "Shutki Maach",
+                        "Ilish Bhapa"
+                    ],
+                    "correct": 2,
+                    "points": 10,
+                    "fact": "Shutki Maach refers to dried fish, known for its strong aroma and acquired taste, used in rustic Bengali dishes."
+                },
+                {
+                    "question": "The 'Chhanar Jilipi' is a sweet from Bengal with a shape similar to which other famous Indian sweet?",
+                    "options": [
+                        "Jalebi",
+                        "Balushahi",
+                        "Barfi",
+                        "Rasgulla"
+                    ],
+                    "correct": 0,
+                    "points": 10,
+                    "fact": "Chhanar Jilipi is shaped like a jalebi but made from fresh chhana, giving it a soft, spongy texture."
+                }
+            ],
+            "totalAvailable": 40,
+            "selectCount": 10
+        },
+        {
+            "round": 2,
+            "difficulty": "Very Hard",
+            "questions": [
+                {
+                    "question": "Which rare West Bengali leafy green, used in traditional Panta Bhat during summer, is botanically known as 'Enhydra fluctuans'?",
+                    "options": [
+                        "Kalmi Shaak",
+                        "Laal Shaak",
+                        "Kumro Shaak",
+                        "Pui Shaak"
+                    ],
+                    "correct": 0,
+                    "points": 10,
+                    "fact": "Kalmi Shaak, or water spinach, is prized in Bengali households for its cooling properties and is commonly added to light rice-based dishes."
+                },
+                {
+                    "question": "Which elaborate Bengali sweet is shaped like a conch shell and is especially associated with the region of Krishnanagar?",
+                    "options": [
+                        "Shankh Sandesh",
+                        "Langcha",
+                        "Chhanabora",
+                        "Sitabhog"
+                    ],
+                    "correct": 0,
+                    "points": 10,
+                    "fact": "Shankh Sandesh is renowned for its intricate conch-like shape, symbolising auspiciousness in Bengali culture."
+                },
+                {
+                    "question": "The traditional Bengali spice blend 'Panch Phoron' consists of five whole spices. Which of the following is NOT part of the mixture?",
+                    "options": [
+                        "Fennel seeds",
+                        "Fenugreek seeds",
+                        "Mustard seeds",
+                        "Coriander seeds"
+                    ],
+                    "correct": 3,
+                    "points": 10,
+                    "fact": "Panch Phoron contains fennel, mustard, fenugreek, nigella, and cumin seeds, but not coriander seeds."
+                },
+                {
+                    "question": "Which fish is central to the dish 'Chitol Macher Muitha', where the flesh is minced and shaped into dumplings?",
+                    "options": [
+                        "Pabda",
+                        "Chitala",
+                        "Katla",
+                        "Tangra"
+                    ],
+                    "correct": 1,
+                    "points": 10,
+                    "fact": "Chitala, known for its fine bones, is transformed in this unique preparation that showcases Bengali culinary ingenuity."
+                },
+                {
+                    "question": "Which rare mango variety from West Bengal is traditionally used to prepare the sweet and sour 'Aam Kasundi' condiment?",
+                    "options": [
+                        "Lakshmanbhog",
+                        "Langra",
+                        "Himsagar",
+                        "Gulabkhas"
+                    ],
+                    "correct": 3,
+                    "points": 10,
+                    "fact": "Gulabkhas is a fragrant variety cherished in Bengal, especially for making tangy mustard-based relishes."
+                },
+                {
+                    "question": "In the context of Bengali cuisine, what is 'Tetor Dal' primarily flavoured with?",
+                    "options": [
+                        "Pointed gourd",
+                        "Bitter gourd",
+                        "Ridge gourd",
+                        "Bottle gourd"
+                    ],
+                    "correct": 1,
+                    "points": 10,
+                    "fact": "Tetor Dal refers to lentils flavoured with bitter gourd, often served at the start of a meal to stimulate appetite."
+                },
+                {
+                    "question": "Which West Bengali sweet is made with cottage cheese and jaggery, shaped into discs, and originates from Murshidabad?",
+                    "options": [
+                        "Rasgulla",
+                        "Chanar Jilipi",
+                        "Chhanabora",
+                        "Khirer Chop"
+                    ],
+                    "correct": 2,
+                    "points": 10,
+                    "fact": "Chhanabora is a speciality of Murshidabad and is distinct for its caramelised crust."
+                },
+                {
+                    "question": "The traditional Bengali 'Bori' is sun-dried and often added to vegetable dishes. Which ingredient is its primary base?",
+                    "options": [
+                        "Chana dal",
+                        "Urad dal",
+                        "Moong dal",
+                        "Masoor dal"
+                    ],
+                    "correct": 2,
+                    "points": 10,
+                    "fact": "Bori is typically made from ground moong dal, piped into small shapes and sun-dried for preservation."
+                },
+                {
+                    "question": "Which ancient Bengali rice variety, once reserved for royalty, is known for its small grains and delicate aroma?",
+                    "options": [
+                        "Sona Masuri",
+                        "Tulaipanji",
+                        "Badshabhog",
+                        "Gobindobhog"
+                    ],
+                    "correct": 3,
+                    "points": 10,
+                    "fact": "Gobindobhog is a short-grained, aromatic rice used in festive preparations like Khichuri and Payesh."
+                },
+                {
+                    "question": "What is the primary ingredient in 'Kumro Phool Bhaja', a popular Bengali monsoon snack?",
+                    "options": [
+                        "Pumpkin flowers",
+                        "Drumstick flowers",
+                        "Bottle gourd flowers",
+                        "Banana flowers"
+                    ],
+                    "correct": 0,
+                    "points": 10,
+                    "fact": "Pumpkin flowers are dipped in seasoned batter and deep-fried, making a delicate and crispy treat."
+                },
+                {
+                    "question": "Which traditional Bengali dessert, often served at weddings, contains layers of chhena and khoya with saffron and pistachio?",
+                    "options": [
+                        "Malai Roll",
+                        "Chomchom",
+                        "Sandesh Paturi",
+                        "Rasmalai"
+                    ],
+                    "correct": 0,
+                    "points": 10,
+                    "fact": "Malai Roll is an elaborate sweet combining chhena and reduced milk, rolled and garnished for special occasions."
+                },
+                {
+                    "question": "In Bengali cuisine, what is 'Gota Sheddho' and when is it traditionally prepared?",
+                    "options": [
+                        "A fish curry for Noboborsho",
+                        "A mixed vegetable boil for Saraswati Puja",
+                        "A meat stew for Durga Puja",
+                        "A sweet rice pudding for Dol Jatra"
+                    ],
+                    "correct": 1,
+                    "points": 10,
+                    "fact": "Gota Sheddho is a medley of whole vegetables and lentils, eaten during Saraswati Puja for auspiciousness."
+                },
+                {
+                    "question": "Which Bengali dessert features a stuffing of coconut and date palm jaggery, encased in rice flour dough and steamed?",
+                    "options": [
+                        "Doodh Puli",
+                        "Soru Chakli",
+                        "Pati Shapta",
+                        "Bhapa Pitha"
+                    ],
+                    "correct": 0,
+                    "points": 10,
+                    "fact": "Doodh Puli is made during Poush Parbon and served in thickened milk, offering a unique combination of textures."
+                },
+                {
+                    "question": "What is the rare ingredient added to 'Mochar Ghonto', a Bengali dry curry, to enhance its flavour?",
+                    "options": [
+                        "Poppy seeds",
+                        "Raisins",
+                        "Prawns",
+                        "Cashew nuts"
+                    ],
+                    "correct": 2,
+                    "points": 10,
+                    "fact": "Mochar Ghonto sometimes includes prawns for a richer taste, though the vegetarian version is also popular."
+                },
+                {
+                    "question": "Which type of rice is traditionally used in 'Payesh', the Bengali rice pudding served during birthdays?",
+                    "options": [
+                        "Basmati",
+                        "Jasmine",
+                        "Sona Masuri",
+                        "Gobindobhog"
+                    ],
+                    "correct": 3,
+                    "points": 10,
+                    "fact": "Gobindobhog rice imparts a creamy texture and subtle aroma, making it ideal for Payesh."
+                },
+                {
+                    "question": "The classic Bengali 'Dhokar Dalna' is made from which main ingredient?",
+                    "options": [
+                        "Toor dal",
+                        "Chana dal",
+                        "Masoor dal",
+                        "Moong dal"
+                    ],
+                    "correct": 1,
+                    "points": 10,
+                    "fact": "Dhokar Dalna uses chana dal to create spicy lentil cakes, which are then simmered in a tomato-based gravy."
+                },
+                {
+                    "question": "Which Bengali snack is made from deep-fried rice flour dough and is shaped like a crescent moon?",
+                    "options": [
+                        "Kucho Nimki",
+                        "Nimki",
+                        "Goja",
+                        "Kheerer Shingara"
+                    ],
+                    "correct": 3,
+                    "points": 10,
+                    "fact": "Kheerer Shingara is filled with sweetened khoya, contrasting the savoury version served with tea."
+                },
+                {
+                    "question": "The dish 'Shukto' is characterised by its use of which unusual spice that imparts a subtle bitterness?",
+                    "options": [
+                        "Ajwain",
+                        "Fennel",
+                        "Radhuni",
+                        "Dill"
+                    ],
+                    "correct": 2,
+                    "points": 10,
+                    "fact": "Radhuni, sometimes called wild celery, is a signature spice in Shukto, rarely found outside Bengal."
+                },
+                {
+                    "question": "In Bengali cuisine, 'Chingri Malaikari' is best prepared using which specific variety of prawn?",
+                    "options": [
+                        "Bagda Chingri",
+                        "Kucho Chingri",
+                        "Golda Chingri",
+                        "Ilish Chingri"
+                    ],
+                    "correct": 2,
+                    "points": 10,
+                    "fact": "Golda Chingri, or giant river prawn, is preferred for Chingri Malaikari due to its size and rich taste."
+                },
+                {
+                    "question": "Which traditional Bengali breakfast item is made by fermenting rice and urad dal, then steaming the batter in small bowls?",
+                    "options": [
+                        "Chitoi Pitha",
+                        "Bhapa Pitha",
+                        "Idli",
+                        "Soru Chakli"
+                    ],
+                    "correct": 0,
+                    "points": 10,
+                    "fact": "Chitoi Pitha is a spongy rice cake, enjoyed with nolen gur or thickened milk especially in rural households."
+                },
+                {
+                    "question": "Which variety of brinjal is traditionally favoured for making 'Begun Pora', a classic Bengali roasted aubergine dish?",
+                    "options": [
+                        "White brinjal",
+                        "Long purple brinjal",
+                        "Round violet brinjal",
+                        "Green brinjal"
+                    ],
+                    "correct": 2,
+                    "points": 10,
+                    "fact": "Round violet brinjals are preferred for their smoky flavour and creamy texture in Begun Pora."
+                },
+                {
+                    "question": "What is the unique feature of the Bengali sweet 'Sitabhog', native to Bardhaman?",
+                    "options": [
+                        "Stuffed with coconut",
+                        "Resembles rice grains",
+                        "Contains rose petals",
+                        "Layered with chocolate"
+                    ],
+                    "correct": 1,
+                    "points": 10,
+                    "fact": "Sitabhog is famous for its sweet, rice-like appearance and is often accompanied by Mihidana."
+                },
+                {
+                    "question": "Which green is used in the traditional Bengali dish 'Pui Shaak Chingri'?",
+                    "options": [
+                        "Malabar spinach",
+                        "Mustard greens",
+                        "Amaranth",
+                        "Fenugreek leaves"
+                    ],
+                    "correct": 0,
+                    "points": 10,
+                    "fact": "Pui Shaak refers to Malabar spinach, which is slow-cooked with prawns for a creamy consistency."
+                },
+                {
+                    "question": "The unique Bengali 'Aloor Chop' is believed to have originated in which Kolkata locality?",
+                    "options": [
+                        "Gariahat",
+                        "Shyambazar",
+                        "Lake Market",
+                        "College Street"
+                    ],
+                    "correct": 1,
+                    "points": 10,
+                    "fact": "Shyambazar is famous for its street food stalls popularising Aloor Chop as an evening snack."
+                },
+                {
+                    "question": "Which rare spice, called 'Mouri' in Bengali, is used in both sweet and savoury dishes for its aromatic flavour?",
+                    "options": [
+                        "Caraway seed",
+                        "Cumin seed",
+                        "Fennel seed",
+                        "Nigella seed"
+                    ],
+                    "correct": 2,
+                    "points": 10,
+                    "fact": "Fennel seeds, or Mouri, are often chewed as a mouth freshener and used in Bengali desserts and curries."
+                },
+                {
+                    "question": "The traditional 'Bhapa Ilish' is prepared by cooking hilsa fish in what manner?",
+                    "options": [
+                        "Grilling",
+                        "Steaming",
+                        "Frying",
+                        "Baking"
+                    ],
+                    "correct": 1,
+                    "points": 10,
+                    "fact": "Bhapa Ilish is steamed with a paste of mustard and coconut, highlighting the delicate texture of hilsa."
+                },
+                {
+                    "question": "Which traditional dessert from the Nadia district is made with flour, sugar, and ghee, and shaped into intricate patterns?",
+                    "options": [
+                        "Chhanar Murki",
+                        "Sarpuria",
+                        "Motichur Laddu",
+                        "Jaynagarer Moa"
+                    ],
+                    "correct": 1,
+                    "points": 10,
+                    "fact": "Sarpuria is a layered sweet with a soft, creamy texture, unique to the Nadia region."
+                },
+                {
+                    "question": "The Bengali dish 'Macher Paturi' features fish marinated in spices and cooked in which leaf?",
+                    "options": [
+                        "Banana leaf",
+                        "Pumpkin leaf",
+                        "Cabbage leaf",
+                        "Sal leaf"
+                    ],
+                    "correct": 0,
+                    "points": 10,
+                    "fact": "Banana leaf imparts a subtle aroma and keeps the fish moist during steaming or grilling."
+                },
+                {
+                    "question": "Which traditional Bengali dish is prepared with dried lentil dumplings and leafy greens, especially during winter?",
+                    "options": [
+                        "Chorchori",
+                        "Shukto",
+                        "Shaak-Bori",
+                        "Lau Ghonto"
+                    ],
+                    "correct": 2,
+                    "points": 10,
+                    "fact": "Shaak-Bori combines sun-dried lentil dumplings with various greens, creating a nutritious winter staple."
+                },
+                {
+                    "question": "What is the primary ingredient in 'Daber Shorbot', a refreshing summer drink in Bengal?",
+                    "options": [
+                        "Tamarind",
+                        "Aam panna",
+                        "Bael pulp",
+                        "Tender coconut water"
+                    ],
+                    "correct": 3,
+                    "points": 10,
+                    "fact": "Daber Shorbot is made from tender coconut water and soft malai, often flavoured with a hint of lime."
+                },
+                {
+                    "question": "Which rarely used part of the banana plant is featured in the Bengali preparation 'Thor Ghonto'?",
+                    "options": [
+                        "Banana stem",
+                        "Banana peel",
+                        "Banana leaf",
+                        "Banana flower"
+                    ],
+                    "correct": 0,
+                    "points": 10,
+                    "fact": "Banana stem, or thor, is chopped and cooked with spices, showcasing traditional Bengali sustainability."
+                },
+                {
+                    "question": "Which variety of lentil is used in the iconic 'Bhaja Moong Dal', where the dal is roasted before cooking?",
+                    "options": [
+                        "Black urad dal",
+                        "Green gram",
+                        "Yellow moong dal",
+                        "Red masoor dal"
+                    ],
+                    "correct": 2,
+                    "points": 10,
+                    "fact": "Roasting yellow moong dal before boiling imparts a nutty aroma, making Bhaja Moong Dal a festive favourite."
+                },
+                {
+                    "question": "Which rare Bengali pickle uses thinly sliced green mangoes and is sun-dried before being preserved in mustard oil?",
+                    "options": [
+                        "Amer Achar",
+                        "Amer Morobba",
+                        "Amer Tak",
+                        "Amer Chutney"
+                    ],
+                    "correct": 1,
+                    "points": 10,
+                    "fact": "Amer Morobba is a translucent, sweet-sour preserve, often served as a palate cleanser after meals."
+                },
+                {
+                    "question": "Which unusual ingredient is used in the Bengali winter delicacy 'Nolen Gur'er Sandesh' to impart its unique flavour?",
+                    "options": [
+                        "Coconut milk",
+                        "Cardamom",
+                        "Date palm jaggery",
+                        "Rosewater"
+                    ],
+                    "correct": 2,
+                    "points": 10,
+                    "fact": "Nolen Gur, or fresh date palm jaggery, is harvested in winter and gives the sandesh a distinct caramel flavour."
+                },
+                {
+                    "question": "The famed Kolkata Biryani includes a unique addition not common in other regional biryanis. What is it?",
+                    "options": [
+                        "Paneer",
+                        "Potato",
+                        "Carrot",
+                        "Egg"
+                    ],
+                    "correct": 1,
+                    "points": 10,
+                    "fact": "Kolkata Biryani is distinguished by the inclusion of whole potatoes, a legacy from the Nawabs of Awadh."
+                },
+                {
+                    "question": "Which wild herb, known locally as 'Thankuni', is used in a Bengali chutney believed to aid digestion?",
+                    "options": [
+                        "Basil",
+                        "Coriander",
+                        "Centella Asiatica",
+                        "Mint"
+                    ],
+                    "correct": 2,
+                    "points": 10,
+                    "fact": "Thankuni leaves are ground into a tangy chutney with green chillies and mustard, valued for its medicinal properties."
+                },
+                {
+                    "question": "What is the key difference between 'Labra' and 'Chorchori', two mixed vegetable Bengali preparations?",
+                    "options": [
+                        "Use of panch phoron in Labra",
+                        "Chorchori never contains potatoes",
+                        "Inclusion of fish in Chorchori",
+                        "Labra is always dry"
+                    ],
+                    "correct": 0,
+                    "points": 10,
+                    "fact": "Labra relies on the unique blend of panch phoron, while Chorchori often uses mustard paste for its base."
+                },
+                {
+                    "question": "Which rarely seen Bengali sweet is made by reducing milk and sugar to create a hard, white, diamond-shaped mithai?",
+                    "options": [
+                        "Kheer Kadam",
+                        "Bonda",
+                        "Mihidana",
+                        "Kshirer Shondesh"
+                    ],
+                    "correct": 3,
+                    "points": 10,
+                    "fact": "Kshirer Shondesh is known for its dense texture and subtle sweetness, distinct from the more common chhena-based sandesh."
+                },
+                {
+                    "question": "Which distinctive preparation is made with small river fish, cooked with eggplant and green chillies, and thickened with poppy seed paste?",
+                    "options": [
+                        "Koi Macher Tel Jhal",
+                        "Mourala Macher Ghonto",
+                        "Pabda Macher Jhal",
+                        "Tangra Macher Jhal"
+                    ],
+                    "correct": 1,
+                    "points": 10,
+                    "fact": "Mourala Macher Ghonto is a homestyle dish, utilising tiny fish and poppy seeds for a creamy, spicy gravy."
+                },
+                {
+                    "question": "What makes 'Jaynagarer Moa' from South 24 Parganas unique among Bengali sweets?",
+                    "options": [
+                        "Fried in ghee",
+                        "Stuffed with nuts",
+                        "Inclusion of saffron",
+                        "Use of Kanakchur khoi"
+                    ],
+                    "correct": 3,
+                    "points": 10,
+                    "fact": "Jaynagarer Moa is crafted from a rare variety of puffed rice called Kanakchur, mixed with nolen gur and ghee."
+                },
+                {
+                    "question": "Which dish is prepared by fermenting black gram and rice, then making thin, lacy pancakes traditionally served with jaggery syrup?",
+                    "options": [
+                        "Soru Chakli",
+                        "Chitoi Pitha",
+                        "Malpua",
+                        "Patishapta"
+                    ],
+                    "correct": 0,
+                    "points": 10,
+                    "fact": "Soru Chakli is a festive delicacy, especially enjoyed during winter, and is similar to the South Indian dosa but distinct in taste."
+                },
+                {
+                    "question": "The traditional 'Bhapa Doi' is a steamed dessert made primarily from which two ingredients?",
+                    "options": [
+                        "Chhena and khoya",
+                        "Paneer and sugar",
+                        "Milk and coconut",
+                        "Curd and condensed milk"
+                    ],
+                    "correct": 3,
+                    "points": 10,
+                    "fact": "Bhapa Doi combines thick curd and sweetened condensed milk, resulting in a creamy, cheesecake-like texture."
+                },
+                {
+                    "question": "Which river fish, other than Hilsa, is highly prized for making 'Tel Koi', a delicacy in Bengali homes?",
+                    "options": [
+                        "Catla",
+                        "Magur",
+                        "Rohu",
+                        "Climbing Perch"
+                    ],
+                    "correct": 3,
+                    "points": 10,
+                    "fact": "Tel Koi is made with climbing perch, cooked in rich, spiced mustard oil gravy, and is considered a monsoon treat."
+                }
+            ],
+            "totalAvailable": 40,
+            "selectCount": 10
+        }
+    ]
+}
