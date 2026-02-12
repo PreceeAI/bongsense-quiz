@@ -389,25 +389,29 @@ function getPerformanceMessage(score) {
 async function saveScoreToLeaderboard(username, score, topic) {
     const timestamp = Date.now();
     const entry = {
-        username: username,
-        score: score,
+        username: String(username), // Ensure string
+        score: Number(score),      // Ensure number for your .validate rule
         timestamp: timestamp,
         date: new Date().toISOString()
     };
     
-    // Try Firebase first
     if (firebaseInitialized && database) {
         try {
             const topicKey = topic.replace(/\s+/g, '_');
             const leaderboardRef = database.ref(`leaderboards/${topicKey}`);
+            
+            // Log the entry to console so you can see exactly what is being sent
+            console.log('Attempting to push to Firebase:', entry);
+            
             await leaderboardRef.push(entry);
-            console.log('✅ Score saved to Firebase');
+            console.log('✅ Score successfully synced to Global Leaderboard');
         } catch (error) {
-            console.error('❌ Firebase save failed:', error);
+            console.error('❌ Firebase Global Sync Failed:', error);
+            // On GitHub Pages, this alert will tell you if it's a "Permission Denied" error
+            alert("Leaderboard Sync Error: " + error.message);
         }
     }
     
-    // Always save to localStorage as backup
     saveScoreLocally(username, score, topic, timestamp);
 }
 
