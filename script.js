@@ -1,4 +1,44 @@
-// DOM Elements
+// ============================================
+// FIREBASE CONFIGURATION
+// ============================================
+// TODO: Replace with YOUR Firebase config from Firebase Console
+const firebaseConfig = {
+  apiKey: "AIzaSyDoYiNMQ5DVLnCaySYw0zqLFcawUnysO64",
+  authDomain: "bongsense-quiz.firebaseapp.com",
+  databaseURL: "https://bongsense-quiz-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "bongsense-quiz",
+  storageBucket: "bongsense-quiz.firebasestorage.app",
+  messagingSenderId: "908406939869",
+  appId: "1:908406939869:web:195720a315bcfa351e3b34",
+  measurementId: "G-PFXWENP2MS"
+};
+
+// Initialize Firebase
+let database = null;
+let firebaseInitialized = false;
+
+function initFirebase() {
+    try {
+        if (typeof firebase !== 'undefined') {
+            firebase.initializeApp(firebaseConfig);
+            database = firebase.database();
+            firebaseInitialized = true;
+            console.log('✅ Firebase initialized');
+        } else {
+            console.warn('⚠️ Firebase SDK not loaded, using localStorage');
+        }
+    } catch (error) {
+        console.error('❌ Firebase initialization failed:', error);
+        console.log('📝 Falling back to localStorage');
+    }
+}
+
+// Initialize Firebase when script loads
+initFirebase();
+
+// ============================================
+// DOM ELEMENTS
+// ============================================
 const welcomeScreen = document.getElementById('welcomeScreen');
 const usernameScreen = document.getElementById('usernameScreen');
 const leaderboardScreen = document.getElementById('leaderboardScreen');
@@ -28,6 +68,10 @@ let timerInterval = null;
 let timeLeft = 20;
 let answerSelected = false;
 let currentUsername = '';
+
+// ============================================
+// QUIZ CORE FUNCTIONS
+// ============================================
 
 // Load questions from JSON
 async function loadQuestions() {
@@ -256,14 +300,15 @@ function nextQuestion() {
 }
 
 // Show results
-function showResults() {
+async function showResults() {
     clearInterval(timerInterval);
     
     const timeTaken = Math.floor((Date.now() - quizStartTime) / 1000);
     const accuracyPercent = Math.round((correctAnswers / totalQuestions) * 100);
     
-    // Save score to leaderboard
-    const leaderboard = saveScoreToLeaderboard(currentUsername, score, quizData.topic);
+    // Save score to leaderboard (Firebase or localStorage)
+    await saveScoreToLeaderboard(currentUsername, score, quizData.topic);
+    const leaderboard = await getLeaderboard(quizData.topic);
     const userRank = getUserRank(currentUsername, Date.now(), leaderboard);
     
     // Update results display
@@ -332,182 +377,137 @@ function getPerformanceMessage(score) {
     };
 }
 
-// Share score
-async function shareScore() {
-    const resultsContainer = document.querySelector('.results-container');
-    const buttons = document.querySelector('.action-buttons');
-    
-    // Hide buttons temporarily
-    buttons.style.display = 'none';
-    
-    // Wait a moment for button to disappear
-    await new Promise(resolve => setTimeout(resolve, 100));
-    
-    try {
-        const canvas = await html2canvas(resultsContainer, {
-            backgroundColor: '#ffffff',
-            scale: 3,
-            logging: false,
-            useCORS: true,
-            allowTaint: true
-        });
-        
-        buttons.style.display = 'flex';
-        
-        canvas.toBlob(async (blob) => {
-            // Check if Web Share API is supported
-            if (navigator.share && navigator.canShare) {
-                const file = new File([blob], 'bongsense-quiz-score.png', { type: 'image/png' });
-                
-                if (navigator.canShare({ files: [file] })) {
-                    try {
-                        await navigator.share({
-                            files: [file],
-                            title: 'My Bongsense Quiz Score',
-                            text: `I scored ${score}/200 on The Bongsense Quiz!`
-                        });
-                    } catch (err) {
-                        if (err.name !== 'AbortError') {
-                            downloadImage(blob);
-                        }
-                    }
-                } else {
-                    downloadImage(blob);
-                }
-            } else {
-                downloadImage(blob);
-            }
-        }, 'image/png', 1.0);
-    } catch (error) {
-        console.error('Error capturing screenshot:', error);
-        buttons.style.display = 'flex';
-        alert('Could not capture screenshot. Please try again.');
-    }
-}
+// ============================================
+// LEADERBOARD - FIREBASE + localStorage FALLBACK
+// ============================================
 
-// Download image
-function downloadImage(blob) {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `bongsense-quiz-score-${score}.png`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-}
-
-// Reset quiz
-function resetQuiz() {
-    currentRound = 0;
-    currentQuestion = 0;
-    score = 0;
-    correctAnswers = 0;
-    totalQuestions = 0;
-    
-    // Re-select random questions for new game
-    selectRandomQuestions();
-    
-    // Keep username, just go back to username screen
-    switchScreen(resultsScreen, usernameScreen);
-    usernameInput.value = currentUsername;
-}
-
-// Event listeners
-startGameBtn.addEventListener('click', () => {
-    switchScreen(welcomeScreen, usernameScreen);
-});
-
-continueBtn.addEventListener('click', () => {
-    const username = usernameInput.value.trim();
-    if (username === '') {
-        document.getElementById('usernameError').classList.remove('hidden');
-        return;
-    }
-    currentUsername = username;
-    document.getElementById('usernameError').classList.add('hidden');
-    startGame();
-});
-
-backToWelcomeBtn.addEventListener('click', () => {
-    switchScreen(usernameScreen, welcomeScreen);
-    usernameInput.value = '';
-});
-
-viewLeaderboardBtn.addEventListener('click', showLeaderboard);
-viewLeaderboardResultsBtn.addEventListener('click', showLeaderboard);
-closeLeaderboardBtn.addEventListener('click', () => {
-    switchScreen(leaderboardScreen, welcomeScreen);
-});
-
-playAgainBtn.addEventListener('click', resetQuiz);
-shareScoreBtn.addEventListener('click', shareScore);
-
-// Leaderboard Management
-function saveScoreToLeaderboard(username, score, topic) {
-    // Get existing leaderboard for this topic
-    const leaderboardKey = `leaderboard_${topic.replace(/\s+/g, '_')}`;
-    let leaderboard = JSON.parse(localStorage.getItem(leaderboardKey) || '[]');
-    
-    // Add new score
+async function saveScoreToLeaderboard(username, score, topic) {
+    const timestamp = Date.now();
     const entry = {
         username: username,
         score: score,
-        date: new Date().toISOString(),
-        timestamp: Date.now()
+        timestamp: timestamp,
+        date: new Date().toISOString()
     };
     
-    leaderboard.push(entry);
-    
-    // Sort by score (descending), then by timestamp (ascending for ties)
-    leaderboard.sort((a, b) => {
-        if (b.score !== a.score) {
-            return b.score - a.score;
+    // Try Firebase first
+    if (firebaseInitialized && database) {
+        try {
+            const topicKey = topic.replace(/\s+/g, '_');
+            const leaderboardRef = database.ref(`leaderboards/${topicKey}`);
+            await leaderboardRef.push(entry);
+            console.log('✅ Score saved to Firebase');
+        } catch (error) {
+            console.error('❌ Firebase save failed:', error);
         }
+    }
+    
+    // Always save to localStorage as backup
+    saveScoreLocally(username, score, topic, timestamp);
+}
+
+function saveScoreLocally(username, score, topic, timestamp) {
+    const leaderboardKey = `leaderboard_${topic.replace(/\s+/g, '_')}`;
+    let leaderboard = JSON.parse(localStorage.getItem(leaderboardKey) || '[]');
+    
+    leaderboard.push({
+        username: username,
+        score: score,
+        date: new Date().toISOString(),
+        timestamp: timestamp || Date.now()
+    });
+    
+    leaderboard.sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
         return a.timestamp - b.timestamp;
     });
     
-    // Keep only top 100
     leaderboard = leaderboard.slice(0, 100);
-    
-    // Save back to localStorage
     localStorage.setItem(leaderboardKey, JSON.stringify(leaderboard));
-    
-    return leaderboard;
 }
 
-function getLeaderboard(topic) {
+async function getLeaderboard(topic) {
+    // Try Firebase first
+    if (firebaseInitialized && database) {
+        try {
+            const topicKey = topic.replace(/\s+/g, '_');
+            const leaderboardRef = database.ref(`leaderboards/${topicKey}`);
+            
+            const snapshot = await leaderboardRef
+                .orderByChild('score')
+                .limitToLast(100)
+                .once('value');
+            
+            if (snapshot.exists()) {
+                const leaderboard = [];
+                snapshot.forEach((child) => {
+                    leaderboard.push({
+                        id: child.key,
+                        ...child.val()
+                    });
+                });
+                
+                // Sort by score desc, then timestamp asc
+                leaderboard.sort((a, b) => {
+                    if (b.score !== a.score) return b.score - a.score;
+                    return a.timestamp - b.timestamp;
+                });
+                
+                console.log(`✅ Loaded ${leaderboard.length} scores from Firebase`);
+                return leaderboard;
+            }
+        } catch (error) {
+            console.error('❌ Firebase load failed:', error);
+        }
+    }
+    
+    // Fallback to localStorage
+    return getLeaderboardLocally(topic);
+}
+
+function getLeaderboardLocally(topic) {
     const leaderboardKey = `leaderboard_${topic.replace(/\s+/g, '_')}`;
     return JSON.parse(localStorage.getItem(leaderboardKey) || '[]');
 }
 
 function getUserRank(username, timestamp, leaderboard) {
+    const userEntries = leaderboard.filter(e => e.username === username);
+    if (userEntries.length === 0) return leaderboard.length;
+    
+    const latestEntry = userEntries.reduce((latest, current) => {
+        return current.timestamp > latest.timestamp ? current : latest;
+    });
+    
     const index = leaderboard.findIndex(entry => 
-        entry.username === username && Math.abs(entry.timestamp - timestamp) < 5000
+        entry.username === latestEntry.username && 
+        entry.timestamp === latestEntry.timestamp
     );
+    
     return index >= 0 ? index + 1 : leaderboard.length;
 }
 
-function showLeaderboard() {
+async function showLeaderboard() {
     const topic = quizData.topic;
-    const leaderboard = getLeaderboard(topic);
+    const leaderboard = await getLeaderboard(topic);
     
     document.getElementById('leaderboardTopic').textContent = `Topic: ${topic}`;
     
     const leaderboardList = document.getElementById('leaderboardList');
-    leaderboardList.innerHTML = '';
+    leaderboardList.innerHTML = '<div class="leaderboard-empty">Loading...</div>';
     
     if (leaderboard.length === 0) {
         leaderboardList.innerHTML = '<div class="leaderboard-empty">No scores yet. Be the first to play!</div>';
     } else {
-        leaderboard.forEach((entry, index) => {
+        leaderboardList.innerHTML = '';
+        
+        leaderboard.slice(0, 100).forEach((entry, index) => {
             const rank = index + 1;
             const entryEl = document.createElement('div');
             entryEl.className = 'leaderboard-entry';
             
             // Highlight current user's most recent score
             if (currentUsername && entry.username === currentUsername && 
-                Math.abs(Date.now() - entry.timestamp) < 60000) {
+                Math.abs(Date.now() - entry.timestamp) < 300000) {
                 entryEl.classList.add('current-user');
             }
             
@@ -545,5 +545,119 @@ function showLeaderboard() {
     switchScreen(fromScreen, leaderboardScreen);
 }
 
-// Initialize
+// ============================================
+// SHARE SCORE
+// ============================================
+
+async function shareScore() {
+    const resultsContainer = document.querySelector('.results-container');
+    const buttons = document.querySelector('.action-buttons');
+    
+    buttons.style.display = 'none';
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    try {
+        const canvas = await html2canvas(resultsContainer, {
+            backgroundColor: '#ffffff',
+            scale: 3,
+            logging: false,
+            useCORS: true,
+            allowTaint: true
+        });
+        
+        buttons.style.display = 'flex';
+        
+        canvas.toBlob(async (blob) => {
+            if (navigator.share && navigator.canShare) {
+                const file = new File([blob], 'bongsense-quiz-score.png', { type: 'image/png' });
+                
+                if (navigator.canShare({ files: [file] })) {
+                    try {
+                        await navigator.share({
+                            files: [file],
+                            title: 'My Bongsense Quiz Score',
+                            text: `I scored ${score}/200 on The Bongsense Quiz!`
+                        });
+                    } catch (err) {
+                        if (err.name !== 'AbortError') {
+                            downloadImage(blob);
+                        }
+                    }
+                } else {
+                    downloadImage(blob);
+                }
+            } else {
+                downloadImage(blob);
+            }
+        }, 'image/png', 1.0);
+    } catch (error) {
+        console.error('Error capturing screenshot:', error);
+        buttons.style.display = 'flex';
+        alert('Could not capture screenshot. Please try again.');
+    }
+}
+
+function downloadImage(blob) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `bongsense-quiz-score-${score}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+// ============================================
+// RESET QUIZ
+// ============================================
+
+function resetQuiz() {
+    currentRound = 0;
+    currentQuestion = 0;
+    score = 0;
+    correctAnswers = 0;
+    totalQuestions = 0;
+    
+    selectRandomQuestions();
+    switchScreen(resultsScreen, usernameScreen);
+    usernameInput.value = currentUsername;
+}
+
+// ============================================
+// EVENT LISTENERS
+// ============================================
+
+startGameBtn.addEventListener('click', () => {
+    switchScreen(welcomeScreen, usernameScreen);
+});
+
+continueBtn.addEventListener('click', () => {
+    const username = usernameInput.value.trim();
+    if (username === '') {
+        document.getElementById('usernameError').classList.remove('hidden');
+        return;
+    }
+    currentUsername = username;
+    document.getElementById('usernameError').classList.add('hidden');
+    startGame();
+});
+
+backToWelcomeBtn.addEventListener('click', () => {
+    switchScreen(usernameScreen, welcomeScreen);
+    usernameInput.value = '';
+});
+
+viewLeaderboardBtn.addEventListener('click', showLeaderboard);
+viewLeaderboardResultsBtn.addEventListener('click', showLeaderboard);
+closeLeaderboardBtn.addEventListener('click', () => {
+    switchScreen(leaderboardScreen, welcomeScreen);
+});
+
+playAgainBtn.addEventListener('click', resetQuiz);
+shareScoreBtn.addEventListener('click', shareScore);
+
+// ============================================
+// INITIALIZE
+// ============================================
 loadQuestions();
