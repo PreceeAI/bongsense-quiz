@@ -8,7 +8,7 @@
     "rounds": [
         {
             "round": 1,
-            "difficulty": "Hard",
+            "difficulty": "Medium",
             "questions": [
                 {
                     "question": "Which specific variety of rice is traditionally used to prepare the Bengali sweet 'Nolen Gur'er Payesh' during winter?",
@@ -520,7 +520,7 @@
         },
         {
             "round": 2,
-            "difficulty": "Very Hard",
+            "difficulty": "Hard",
             "questions": [
                 {
                     "question": "Which rare West Bengali leafy green, used in traditional Panta Bhat during summer, is botanically known as 'Enhydra fluctuans'?",
