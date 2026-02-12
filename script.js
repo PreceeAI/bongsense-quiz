@@ -18,18 +18,23 @@ let database = null;
 let firebaseInitialized = false;
 
 function initFirebase() {
+    console.log('🔥 Attempting Firebase initialization...');
     try {
         if (typeof firebase !== 'undefined') {
+            console.log('✅ Firebase SDK detected');
             firebase.initializeApp(firebaseConfig);
             database = firebase.database();
             firebaseInitialized = true;
-            console.log('✅ Firebase initialized');
+            console.log('✅ Firebase initialized successfully');
+            console.log('📍 Database URL:', firebaseConfig.databaseURL);
         } else {
             console.warn('⚠️ Firebase SDK not loaded, using localStorage');
+            console.log('Make sure Firebase scripts are in your HTML!');
         }
     } catch (error) {
         console.error('❌ Firebase initialization failed:', error);
         console.log('📝 Falling back to localStorage');
+        console.log('Error details:', error.message);
     }
 }
 
@@ -427,16 +432,23 @@ function saveScoreLocally(username, score, topic, timestamp) {
 }
 
 async function getLeaderboard(topic) {
+    console.log('📊 Loading leaderboard for:', topic);
+    console.log('Firebase initialized?', firebaseInitialized);
+    
     // Try Firebase first
     if (firebaseInitialized && database) {
         try {
             const topicKey = topic.replace(/\s+/g, '_');
             const leaderboardRef = database.ref(`leaderboards/${topicKey}`);
             
+            console.log('📡 Fetching from Firebase path:', `leaderboards/${topicKey}`);
+            
             const snapshot = await leaderboardRef
                 .orderByChild('score')
                 .limitToLast(100)
                 .once('value');
+            
+            console.log('📦 Firebase snapshot exists?', snapshot.exists());
             
             if (snapshot.exists()) {
                 const leaderboard = [];
@@ -455,14 +467,21 @@ async function getLeaderboard(topic) {
                 
                 console.log(`✅ Loaded ${leaderboard.length} scores from Firebase`);
                 return leaderboard;
+            } else {
+                console.log('⚠️ No data in Firebase, checking localStorage...');
             }
         } catch (error) {
             console.error('❌ Firebase load failed:', error);
+            console.log('Error details:', error.message);
         }
+    } else {
+        console.log('⚠️ Firebase not available, using localStorage');
     }
     
     // Fallback to localStorage
-    return getLeaderboardLocally(topic);
+    const localData = getLeaderboardLocally(topic);
+    console.log(`📝 Loaded ${localData.length} scores from localStorage`);
+    return localData;
 }
 
 function getLeaderboardLocally(topic) {
