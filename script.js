@@ -33,7 +33,6 @@ let currentQuestionIdx = 0;
 let score = 0;
 let currentUsername = '';
 let timerInterval = null;
-let timeLeft = 20;
 
 // --- 3. UI Helpers ---
 function showScreen(screenId) {
@@ -56,7 +55,6 @@ function prepareGame() {
     currentQuestionIdx = 0;
     selectedQuestions = quizData.rounds.map(round => ({
         ...round,
-        // Shuffle and take 10 questions per round
         questions: [...round.questions].sort(() => 0.5 - Math.random()).slice(0, 10)
     }));
     startQuestion();
@@ -72,7 +70,6 @@ function startQuestion() {
     const round = selectedQuestions[currentRoundIdx];
     const question = round.questions[currentQuestionIdx];
     
-    // Update UI
     document.getElementById('questionCounter').textContent = `${(currentRoundIdx * 10) + currentQuestionIdx + 1}/20`;
     document.getElementById('scoreDisplay').textContent = `Score: ${score}`;
     document.getElementById('questionText').textContent = question.question;
@@ -93,27 +90,25 @@ function startQuestion() {
 }
 
 function startTimer() {
-    timeLeft = 20;
+    let timeLeft = 20;
     clearInterval(timerInterval);
     timerInterval = setInterval(() => {
         timeLeft--;
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
-            handleAnswer(-1); // Timeout
+            handleAnswer(-1, -1, 0, "Time is up!");
         }
     }, 1000);
 }
 
 function handleAnswer(selectedIdx, correctIdx, points, fact) {
     clearInterval(timerInterval);
-    const container = document.getElementById('optionsContainer');
-    const buttons = container.querySelectorAll('button');
+    const buttons = document.querySelectorAll('#optionsContainer button');
 
-    // Show correct/incorrect colors
     buttons.forEach((btn, i) => {
         btn.disabled = true;
-        if (i === correctIdx) btn.style.background = '#d4edda'; // Correct
-        if (i === selectedIdx && selectedIdx !== correctIdx) btn.style.background = '#f8d7da'; // Wrong
+        if (i === correctIdx) btn.style.background = '#d4edda'; 
+        if (i === selectedIdx && selectedIdx !== correctIdx) btn.style.background = '#f8d7da';
     });
 
     if (selectedIdx === correctIdx) {
@@ -121,11 +116,8 @@ function handleAnswer(selectedIdx, correctIdx, points, fact) {
         document.getElementById('scoreDisplay').textContent = `Score: ${score}`;
     }
 
-    // Show fact and move forward
-    if (fact) {
-        document.getElementById('factDisplay').style.display = 'block';
-        document.getElementById('factText').textContent = fact;
-    }
+    document.getElementById('factDisplay').style.display = 'block';
+    document.getElementById('factText').textContent = fact || "Next question incoming...";
 
     setTimeout(() => {
         currentQuestionIdx++;
@@ -137,44 +129,71 @@ function handleAnswer(selectedIdx, correctIdx, points, fact) {
     }, 3000);
 }
 
-// --- 6. Results & Firebase Save ---
+// --- 6. Results & Rank Logic ---
 async function finishGame() {
-    showScreen('welcomeScreen'); // Redirect to home after finish
-    alert(`Game Over! Your Final Score: ${score}`);
-    
+    const topicKey = quizData.topic.replace(/\s+/g, '_');
+    let rank = "N/A";
+
     if (firebaseInitialized && currentUsername) {
-        const topicKey = quizData.topic.replace(/\s+/g, '_');
-        await database.ref(`leaderboards/${topicKey}`).push({
-            username: currentUsername,
-            score: score,
-            timestamp: Date.now()
-        });
+        try {
+            const dbRef = database.ref(`leaderboards/${topicKey}`);
+            // 1. Push score
+            await dbRef.push({
+                username: currentUsername,
+                score: score,
+                timestamp: Date.now()
+            });
+
+            // 2. Fetch all scores to calculate rank
+            const snap = await dbRef.orderByChild('score').once('value');
+            const allScores = [];
+            snap.forEach(child => allScores.push(child.val().score));
+            
+            // 3. Sort descending and find rank
+            allScores.sort((a, b) => b - a);
+            rank = allScores.indexOf(score) + 1;
+        } catch (e) { console.error("Sync Error:", e); }
     }
+
+    // Redirect to a Results view (using Leaderboard container for simplicity)
+    const list = document.getElementById('leaderboardList');
+    list.innerHTML = `
+        <div style="padding: 20px; background: #f0f4ff; border-radius: 15px; margin-bottom: 20px;">
+            <h3 style="color: #764ba2; margin-bottom: 10px;">Quiz Complete!</h3>
+            <p style="font-size: 24px; font-weight: 800;">Score: ${score}/200</p>
+            <p style="font-size: 18px; font-weight: 600; color: #667eea;">Global Rank: #${rank}</p>
+        </div>
+        <p style="font-size: 14px; color: #666; margin-bottom: 15px;">Check the full leaderboard below:</p>
+    `;
+    
+    // Show full leaderboard after the summary
+    await fetchAndAppendLeaderboard(topicKey, list);
+    showScreen('leaderboardScreen');
 }
 
-// --- 7. Global Leaderboard Retrieval ---
-async function showLeaderboard() {
-    const list = document.getElementById('leaderboardList');
-    list.innerHTML = '<p style="font-size: 14px;">Syncing...</p>';
-    showScreen('leaderboardScreen');
-
+async function fetchAndAppendLeaderboard(topicKey, container) {
     if (firebaseInitialized) {
-        const topicKey = quizData.topic.replace(/\s+/g, '_');
-        const snap = await database.ref(`leaderboards/${topicKey}`).orderByChild('score').limitToLast(20).once('value');
-        
-        list.innerHTML = '';
+        const snap = await database.ref(`leaderboards/${topicKey}`).orderByChild('score').limitToLast(10).once('value');
         const data = [];
         snap.forEach(c => data.push(c.val()));
         data.reverse().forEach((entry, i) => {
             const div = document.createElement('div');
             div.className = 'leaderboard-entry';
             div.innerHTML = `<span class="entry-name">${entry.username}</span><span class="entry-score">${entry.score}</span>`;
-            list.appendChild(div);
+            container.appendChild(div);
         });
     }
 }
 
-// --- 8. Event Listeners ---
+async function showLeaderboard() {
+    const list = document.getElementById('leaderboardList');
+    list.innerHTML = 'Loading...';
+    showScreen('leaderboardScreen');
+    const topicKey = quizData.topic.replace(/\s+/g, '_');
+    await fetchAndAppendLeaderboard(topicKey, list);
+}
+
+// --- 7. Event Listeners ---
 document.getElementById('startGameBtn').addEventListener('click', () => showScreen('usernameScreen'));
 document.getElementById('viewLeaderboardBtn').addEventListener('click', showLeaderboard);
 document.getElementById('closeLeaderboardBtn').addEventListener('click', () => showScreen('welcomeScreen'));
