@@ -165,26 +165,32 @@ async function finishGame() {
         try {
             const dbRef = database.ref(`leaderboards/${topicKey}`);
             
-            // 1. Push score and wait for confirmation
-            const newRef = await dbRef.push({
+            // 1. Push score
+            await dbRef.push({
                 username: currentUsername,
                 score: score,
                 timestamp: Date.now()
             });
-            console.log('✅ Score saved:', newRef.key);
+            console.log('✅ Score saved');
 
-            // 2. Fetch all scores to calculate rank
-            const snap = await dbRef.orderByChild('score').once('value');
+            // 2. Fetch ALL scores and sort client-side
+            const snap = await dbRef.once('value');
             const allScores = [];
-            snap.forEach(child => allScores.push(child.val().score));
+            snap.forEach(child => {
+                const val = child.val();
+                if (val && typeof val.score === 'number') {
+                    allScores.push(val.score);
+                }
+            });
             
             // 3. Sort descending and find rank
             allScores.sort((a, b) => b - a);
             const foundIdx = allScores.indexOf(score);
             rank = foundIdx >= 0 ? foundIdx + 1 : "N/A";
+            console.log('📊 Total entries:', allScores.length, 'Rank:', rank);
         } catch (e) { 
-            console.error("Firebase Sync Error:", e.code, e.message); 
-            rank = "⚠️ Save failed";
+            console.error("Firebase Error:", e.code, e.message); 
+            rank = "⚠️ Error";
         }
     }
 
@@ -205,21 +211,33 @@ async function finishGame() {
 
 async function fetchAndAppendLeaderboard(topicKey, container) {
     if (!firebaseInitialized) {
-        container.innerHTML += '<p style="color: #e74c3c; font-size: 13px; padding: 10px;">⚠️ Could not connect to leaderboard. Check your internet connection.</p>';
+        container.innerHTML += '<p style="color: #e74c3c; font-size: 13px; padding: 10px;">⚠️ Could not connect to leaderboard.</p>';
         return;
     }
 
     try {
-        const snap = await database.ref(`leaderboards/${topicKey}`).orderByChild('score').limitToLast(10).once('value');
+        // Fetch ALL entries and sort client-side (more reliable than server queries)
+        const snap = await database.ref(`leaderboards/${topicKey}`).once('value');
         const data = [];
-        snap.forEach(c => data.push(c.val()));
+        snap.forEach(c => {
+            const val = c.val();
+            if (val && val.username && typeof val.score === 'number') {
+                data.push(val);
+            }
+        });
+        
+        console.log('📋 Fetched entries:', data.length);
         
         if (data.length === 0) {
             container.innerHTML += '<p style="color: #888; font-size: 13px; padding: 10px;">No scores yet. Be the first!</p>';
             return;
         }
 
-        data.reverse().forEach((entry, i) => {
+        // Sort by score descending, take top 10
+        data.sort((a, b) => b.score - a.score);
+        const top10 = data.slice(0, 10);
+
+        top10.forEach((entry, i) => {
             const medals = ['🥇', '🥈', '🥉'];
             const prefix = i < 3 ? medals[i] : `#${i + 1}`;
             const div = document.createElement('div');
@@ -229,7 +247,7 @@ async function fetchAndAppendLeaderboard(topicKey, container) {
         });
     } catch (e) {
         console.error('Leaderboard fetch error:', e);
-        container.innerHTML += `<p style="color: #e74c3c; font-size: 13px; padding: 10px;">⚠️ Failed to load leaderboard.<br><small style="word-break:break-all;">${e.message}</small></p>`;
+        container.innerHTML += `<p style="color: #e74c3c; font-size: 13px; padding: 10px;">⚠️ Failed to load leaderboard.<br><small>${e.message}</small></p>`;
     }
 }
 
