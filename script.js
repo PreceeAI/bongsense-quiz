@@ -12,6 +12,7 @@ const firebaseConfig = {
 let database = null;
 let firebaseInitialized = false;
 
+// Initialize Firebase
 function initFirebase() {
     try {
         if (typeof firebase !== 'undefined') {
@@ -19,76 +20,106 @@ function initFirebase() {
             database = firebase.database();
             firebaseInitialized = true;
             console.log('✅ Firebase Ready');
+        } else {
+            console.warn('⚠️ Firebase SDK missing');
         }
-    } catch (e) { console.error('Firebase Error', e); }
+    } catch (e) {
+        console.error('❌ Firebase Error:', e);
+    }
 }
 
 initFirebase();
 
-// State
+// App State
 let quizData = null;
 let currentUsername = '';
 
-// UI Elements
-const welcomeScreen = document.getElementById('welcomeScreen');
-const usernameScreen = document.getElementById('usernameScreen');
-const leaderboardScreen = document.getElementById('leaderboardScreen');
-const quizScreen = document.getElementById('quizScreen');
-
-// Navigation
-function showScreen(screen) {
+// Navigation Helpers
+function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    screen.classList.add('active');
+    document.getElementById(screenId).classList.add('active');
 }
 
 // Data Handling
 async function loadQuestions() {
-    const res = await fetch('questions.json');
-    quizData = await res.json();
-    document.getElementById('topicBadge').textContent = `Topic: ${quizData.topic}`;
+    try {
+        const res = await fetch('questions.json');
+        quizData = await res.json();
+        document.getElementById('topicBadge').textContent = `Topic: ${quizData.topic}`;
+    } catch (e) {
+        console.error('Failed to load questions:', e);
+    }
 }
 
+// Leaderboard Display Logic
 async function showLeaderboard() {
     const list = document.getElementById('leaderboardList');
-    list.innerHTML = 'Loading...';
+    list.innerHTML = '<p style="font-size: 14px; color: #666;">Loading scores...</p>';
     
-    if (firebaseInitialized) {
-        const topicKey = quizData.topic.replace(/\s+/g, '_');
-        const snap = await database.ref(`leaderboards/${topicKey}`).orderByChild('score').limitToLast(10).once('value');
-        
-        list.innerHTML = '';
-        const data = [];
-        snap.forEach(c => data.push(c.val()));
-        data.reverse().forEach((entry, i) => {
-            const rank = i + 1;
-            let rankIcon = `#${rank}`;
-            if(rank === 1) rankIcon = '🥇';
-            if(rank === 2) rankIcon = '🥈';
-            if(rank === 3) rankIcon = '🥉';
+    showScreen('leaderboardScreen');
 
-            const div = document.createElement('div');
-            div.className = 'leaderboard-entry';
-            div.innerHTML = `
-                <span class="entry-rank">${rankIcon}</span>
-                <span class="entry-name">${entry.username}</span>
-                <span class="entry-score">${entry.score}</span>
-            `;
-            list.appendChild(div);
-        });
+    if (firebaseInitialized && database) {
+        try {
+            const topicKey = quizData.topic.replace(/\s+/g, '_');
+            const snap = await database.ref(`leaderboards/${topicKey}`)
+                                     .orderByChild('score')
+                                     .limitToLast(20) // Show top 20 for mobile
+                                     .once('value');
+            
+            list.innerHTML = '';
+            const rawData = [];
+            snap.forEach(c => { rawData.push(c.val()); });
+            
+            // Reverse so highest score is first
+            const data = rawData.reverse();
+
+            if (data.length === 0) {
+                list.innerHTML = '<p style="font-size: 14px; color: #666;">No scores yet!</p>';
+                return;
+            }
+
+            data.forEach((entry, i) => {
+                const rank = i + 1;
+                let rankIcon = `#${rank}`;
+                
+                // Set icons for Top 3
+                if(rank === 1) rankIcon = '🥇';
+                else if(rank === 2) rankIcon = '🥈';
+                else if(rank === 3) rankIcon = '🥉';
+
+                const div = document.createElement('div');
+                div.className = `leaderboard-entry ${rank <= 3 ? 'top-' + rank : ''}`;
+                div.innerHTML = `
+                    <div class="entry-left" style="display: flex; align-items: center; gap: 10px;">
+                        <span class="entry-rank">${rankIcon}</span>
+                        <span class="entry-name" style="font-size: 14px;">${entry.username}</span>
+                    </div>
+                    <span class="entry-score">${entry.score}</span>
+                `;
+                list.appendChild(div);
+            });
+        } catch (e) {
+            list.innerHTML = '<p style="font-size: 14px; color: red;">Error loading leaderboard.</p>';
+            console.error(e);
+        }
     }
-    showScreen(leaderboardScreen);
 }
 
-// Event Listeners
-document.getElementById('startGameBtn').addEventListener('click', () => showScreen(usernameScreen));
+// Button Interactions
+document.getElementById('startGameBtn').addEventListener('click', () => showScreen('usernameScreen'));
 document.getElementById('viewLeaderboardBtn').addEventListener('click', showLeaderboard);
-document.getElementById('closeLeaderboardBtn').addEventListener('click', () => showScreen(welcomeScreen));
-document.getElementById('backToWelcomeBtn').addEventListener('click', () => showScreen(welcomeScreen));
+document.getElementById('closeLeaderboardBtn').addEventListener('click', () => showScreen('welcomeScreen'));
+document.getElementById('backToWelcomeBtn').addEventListener('click', () => showScreen('welcomeScreen'));
 
 document.getElementById('continueBtn').addEventListener('click', () => {
     currentUsername = document.getElementById('usernameInput').value.trim();
-    if (currentUsername) showScreen(quizScreen);
-    else alert('Please enter your name');
+    if (currentUsername) {
+        alert('Ready to play! Quiz logic is the next step.');
+        // Next step: Insert actual quiz starting logic here
+    } else {
+        alert('Please enter your name');
+    }
 });
 
+// Start initialization
 loadQuestions();
