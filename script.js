@@ -1,4 +1,4 @@
-// Firebase Configuration
+// --- 1. Firebase Configuration ---
 const firebaseConfig = {
   apiKey: "AIzaSyDoYiNMQ5DVLnCaySYw0zqLFcawUnysO64",
   authDomain: "bongsense-quiz.firebaseapp.com",
@@ -12,7 +12,6 @@ const firebaseConfig = {
 let database = null;
 let firebaseInitialized = false;
 
-// --- 1. Initialize Firebase ---
 function initFirebase() {
     try {
         if (typeof firebase !== 'undefined') {
@@ -20,106 +19,162 @@ function initFirebase() {
             database = firebase.database();
             firebaseInitialized = true;
             console.log('✅ Global Firebase Connected');
-        } else {
-            console.warn('⚠️ Firebase SDK not found, using Local Mode');
         }
-    } catch (e) {
-        console.error('❌ Firebase Error:', e);
-    }
+    } catch (e) { console.error('❌ Firebase Error:', e); }
 }
 
 initFirebase();
 
-// --- 2. App State ---
+// --- 2. Game State ---
 let quizData = null;
+let selectedQuestions = [];
+let currentRoundIdx = 0;
+let currentQuestionIdx = 0;
+let score = 0;
 let currentUsername = '';
+let timerInterval = null;
+let timeLeft = 20;
 
-// --- 3. Navigation Helpers ---
+// --- 3. UI Helpers ---
 function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(screenId).classList.add('active');
 }
 
-// --- 4. Data Handling ---
+// --- 4. Loading & Setup ---
 async function loadQuestions() {
     try {
         const res = await fetch('questions.json');
         quizData = await res.json();
         document.getElementById('topicBadge').textContent = `Topic: ${quizData.topic}`;
-    } catch (e) {
-        console.error('Failed to load questions:', e);
-    }
+    } catch (e) { console.error('Failed to load questions:', e); }
 }
 
-// --- 5. Global Leaderboard Logic ---
-async function showLeaderboard() {
-    const list = document.getElementById('leaderboardList');
-    list.innerHTML = '<p style="font-size: 14px; color: #666;">Syncing with Global Leaderboard...</p>';
-    
-    showScreen('leaderboardScreen');
+function prepareGame() {
+    score = 0;
+    currentRoundIdx = 0;
+    currentQuestionIdx = 0;
+    selectedQuestions = quizData.rounds.map(round => ({
+        ...round,
+        // Shuffle and take 10 questions per round
+        questions: [...round.questions].sort(() => 0.5 - Math.random()).slice(0, 10)
+    }));
+    startQuestion();
+}
 
-    let leaderboardData = [];
-    const topicKey = quizData.topic.replace(/\s+/g, '_');
-
-    // Attempt to get Global Data
-    if (firebaseInitialized && database) {
-        try {
-            const snap = await database.ref(`leaderboards/${topicKey}`)
-                                     .orderByChild('score')
-                                     .limitToLast(30) // Get top 30
-                                     .once('value');
-            
-            if (snap.exists()) {
-                const rawData = [];
-                snap.forEach(c => { rawData.push(c.val()); });
-                // Firebase returns ascending, we need descending for leaderboard
-                leaderboardData = rawData.reverse();
-                console.log("📡 Global Data Fetched");
-            }
-        } catch (e) {
-            console.error("Firebase sync failed, falling back to local:", e);
-        }
-    }
-
-    // Fallback to Local Storage if Global is empty or failed
-    if (leaderboardData.length === 0) {
-        const local = localStorage.getItem(`leaderboard_${topicKey}`);
-        leaderboardData = local ? JSON.parse(local) : [];
-        console.log("📝 Using Local Data");
-    }
-
-    // --- 6. Render the List ---
-    list.innerHTML = '';
-    
-    if (leaderboardData.length === 0) {
-        list.innerHTML = '<p style="font-size: 14px; color: #666;">No scores yet! Be the first.</p>';
+// --- 5. Core Quiz Logic ---
+function startQuestion() {
+    if (currentRoundIdx >= selectedQuestions.length) {
+        finishGame();
         return;
     }
 
-    leaderboardData.forEach((entry, i) => {
-        const rank = i + 1;
-        let rankIcon = `#${rank}`;
-        
-        // Visual enhancements for top 3
-        if(rank === 1) rankIcon = '🥇';
-        else if(rank === 2) rankIcon = '🥈';
-        else if(rank === 3) rankIcon = '🥉';
+    const round = selectedQuestions[currentRoundIdx];
+    const question = round.questions[currentQuestionIdx];
+    
+    // Update UI
+    document.getElementById('questionCounter').textContent = `${(currentRoundIdx * 10) + currentQuestionIdx + 1}/20`;
+    document.getElementById('scoreDisplay').textContent = `Score: ${score}`;
+    document.getElementById('questionText').textContent = question.question;
+    document.getElementById('factDisplay').style.display = 'none';
 
-        const div = document.createElement('div');
-        // Add specific class for top 3 styling from CSS
-        div.className = `leaderboard-entry ${rank <= 3 ? 'top-' + rank : ''}`;
-        div.innerHTML = `
-            <div class="entry-left" style="display: flex; align-items: center; gap: 10px;">
-                <span class="entry-rank" style="min-width: 30px;">${rankIcon}</span>
-                <span class="entry-name" style="font-size: 14px;">${entry.username}</span>
-            </div>
-            <span class="entry-score" style="font-weight: 800; color: #764ba2;">${entry.score}</span>
-        `;
-        list.appendChild(div);
+    const container = document.getElementById('optionsContainer');
+    container.innerHTML = '';
+
+    question.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'pixel-btn btn-secondary';
+        btn.textContent = opt;
+        btn.onclick = () => handleAnswer(i, question.correct, question.points, question.fact);
+        container.appendChild(btn);
     });
+
+    startTimer();
 }
 
-// --- 7. Event Listeners ---
+function startTimer() {
+    timeLeft = 20;
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            handleAnswer(-1); // Timeout
+        }
+    }, 1000);
+}
+
+function handleAnswer(selectedIdx, correctIdx, points, fact) {
+    clearInterval(timerInterval);
+    const container = document.getElementById('optionsContainer');
+    const buttons = container.querySelectorAll('button');
+
+    // Show correct/incorrect colors
+    buttons.forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === correctIdx) btn.style.background = '#d4edda'; // Correct
+        if (i === selectedIdx && selectedIdx !== correctIdx) btn.style.background = '#f8d7da'; // Wrong
+    });
+
+    if (selectedIdx === correctIdx) {
+        score += points;
+        document.getElementById('scoreDisplay').textContent = `Score: ${score}`;
+    }
+
+    // Show fact and move forward
+    if (fact) {
+        document.getElementById('factDisplay').style.display = 'block';
+        document.getElementById('factText').textContent = fact;
+    }
+
+    setTimeout(() => {
+        currentQuestionIdx++;
+        if (currentQuestionIdx >= 10) {
+            currentQuestionIdx = 0;
+            currentRoundIdx++;
+        }
+        startQuestion();
+    }, 3000);
+}
+
+// --- 6. Results & Firebase Save ---
+async function finishGame() {
+    showScreen('welcomeScreen'); // Redirect to home after finish
+    alert(`Game Over! Your Final Score: ${score}`);
+    
+    if (firebaseInitialized && currentUsername) {
+        const topicKey = quizData.topic.replace(/\s+/g, '_');
+        await database.ref(`leaderboards/${topicKey}`).push({
+            username: currentUsername,
+            score: score,
+            timestamp: Date.now()
+        });
+    }
+}
+
+// --- 7. Global Leaderboard Retrieval ---
+async function showLeaderboard() {
+    const list = document.getElementById('leaderboardList');
+    list.innerHTML = '<p style="font-size: 14px;">Syncing...</p>';
+    showScreen('leaderboardScreen');
+
+    if (firebaseInitialized) {
+        const topicKey = quizData.topic.replace(/\s+/g, '_');
+        const snap = await database.ref(`leaderboards/${topicKey}`).orderByChild('score').limitToLast(20).once('value');
+        
+        list.innerHTML = '';
+        const data = [];
+        snap.forEach(c => data.push(c.val()));
+        data.reverse().forEach((entry, i) => {
+            const div = document.createElement('div');
+            div.className = 'leaderboard-entry';
+            div.innerHTML = `<span class="entry-name">${entry.username}</span><span class="entry-score">${entry.score}</span>`;
+            list.appendChild(div);
+        });
+    }
+}
+
+// --- 8. Event Listeners ---
 document.getElementById('startGameBtn').addEventListener('click', () => showScreen('usernameScreen'));
 document.getElementById('viewLeaderboardBtn').addEventListener('click', showLeaderboard);
 document.getElementById('closeLeaderboardBtn').addEventListener('click', () => showScreen('welcomeScreen'));
@@ -128,12 +183,11 @@ document.getElementById('backToWelcomeBtn').addEventListener('click', () => show
 document.getElementById('continueBtn').addEventListener('click', () => {
     currentUsername = document.getElementById('usernameInput').value.trim();
     if (currentUsername) {
-        // Placeholder for game start
-        alert(`Hello ${currentUsername}! Ready to start the quiz?`);
+        showScreen('quizScreen');
+        prepareGame();
     } else {
         alert('Please enter your name');
     }
 });
 
-// Start initialization
 loadQuestions();
