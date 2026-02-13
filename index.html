@@ -2,17 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>The Bongsense Quiz</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Firebase SDK (for global leaderboard) -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 </head>
 <body>
-    <!-- Welcome Screen -->
     <div id="welcomeScreen" class="screen active">
         <div class="welcome-container">
             <div class="logo">BQ</div>
@@ -21,162 +19,67 @@
 
             <div class="info-cards">
                 <div class="info-card">
-                    <div class="info-label">Total Questions</div>
+                    <div class="info-label">Questions</div>
                     <div class="info-value">20</div>
                 </div>
                 <div class="info-card">
                     <div class="info-label">Rounds</div>
                     <div class="info-value">2</div>
                 </div>
-                <div class="info-card">
-                    <div class="info-label">Time per Q</div>
-                    <div class="info-value">20 sec</div>
-                </div>
-                <div class="info-card">
-                    <div class="info-label">Max Score</div>
-                    <div class="info-value">200</div>
-                </div>
             </div>
 
             <div class="rules-section">
                 <div class="rules-title">How It Works</div>
                 <ul class="rules-list">
-                    <li>Two rounds: Medium (10 questions) and Hard (10 questions)</li>
-                    <li>You have 20 seconds to answer each question</li>
-                    <li>Each correct answer earns you 10 points</li>
-                    <li>No negative marking - wrong answers don't reduce your score</li>
+                    <li>20 seconds per question</li>
+                    <li>10 points per correct answer</li>
+                    <li>No negative marking</li>
                 </ul>
             </div>
 
-            <button id="startGameBtn" class="pixel-btn">Start Quiz</button>
-            <button id="viewLeaderboardBtn" class="pixel-btn pixel-btn-secondary">View Leaderboard</button>
+            <div class="button-group">
+                <button id="startGameBtn" class="pixel-btn btn-primary">Start Quiz</button>
+                <button id="viewLeaderboardBtn" class="pixel-btn btn-secondary">View Leaderboard</button>
+            </div>
         </div>
     </div>
 
-    <!-- Username Entry Screen -->
     <div id="usernameScreen" class="screen">
         <div class="welcome-container">
-            <div class="logo-small">BQ</div>
-            <h2 class="subtitle-text">Enter Your Name</h2>
-            <p class="helper-text">Your score will be saved to the leaderboard</p>
-            
-            <div class="username-input-container">
-                <input type="text" id="usernameInput" class="username-input" placeholder="Your name" maxlength="20" autocomplete="off">
-                <div class="username-error hidden" id="usernameError">Please enter your name</div>
+            <h2 class="title">Enter Your Name</h2>
+            <p style="font-size: 13px; color: #666; margin-bottom: 10px;">Your score will be saved to the global leaderboard</p>
+            <input type="text" id="usernameInput" class="username-input" placeholder="Your name" maxlength="20">
+            <div class="button-group">
+                <button id="continueBtn" class="pixel-btn btn-primary">Continue</button>
+                <button id="backToWelcomeBtn" class="pixel-btn btn-secondary">Back</button>
             </div>
-            
-            <button id="continueBtn" class="pixel-btn">Continue</button>
-            <button id="backToWelcomeBtn" class="pixel-btn pixel-btn-secondary">Back</button>
         </div>
     </div>
 
-    <!-- Leaderboard Screen -->
     <div id="leaderboardScreen" class="screen">
         <div class="leaderboard-container">
-            <h1 class="leaderboard-title">🏆 LEADERBOARD</h1>
-            <div class="leaderboard-topic" id="leaderboardTopic">Loading...</div>
-            
-            <div class="leaderboard-list" id="leaderboardList">
-                <!-- Leaderboard entries will be inserted here -->
-            </div>
-            
-            <button id="closeLeaderboardBtn" class="pixel-btn">Back to Home</button>
+            <h1 class="logo">🏆</h1>
+            <h2 class="title">Leaderboard</h2>
+            <div id="leaderboardList" class="leaderboard-list">
+                </div>
+            <button id="closeLeaderboardBtn" class="pixel-btn btn-primary">Back to Home</button>
         </div>
     </div>
 
-    <!-- Round Transition Screen -->
-    <div id="roundScreen" class="screen">
-        <div class="round-transition">
-            <div class="round-number" id="roundNumber">ROUND 1</div>
-            <div class="round-difficulty" id="roundDifficulty">MEDIUM</div>
-            <div class="round-message">GET READY!</div>
-        </div>
-    </div>
-
-    <!-- Quiz Screen -->
     <div id="quizScreen" class="screen">
         <div class="quiz-container">
-            <div class="top-bar">
-                <div class="round-badge" id="currentRound">Round 1 - Medium</div>
-                <div class="stats">
-                    <div class="stat">
-                        <div class="stat-label">Question</div>
-                        <div class="stat-value" id="questionCounter">1/10</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">Score</div>
-                        <div class="stat-value" id="scoreDisplay">0</div>
-                    </div>
-                </div>
+            <div class="top-bar" style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                <span id="questionCounter" style="font-weight: 700; color: #764ba2;">1/20</span>
+                <span id="scoreDisplay" style="font-weight: 700; color: #764ba2;">Score: 0</span>
             </div>
-
-            <div class="timer-container">
-                <div class="timer-bar" id="timerBar"></div>
-            </div>
-
-            <div class="question-header" id="questionHeader">Question 1</div>
-            <h1 class="question-text" id="questionText">Loading question...</h1>
-
-            <div class="options-container" id="optionsContainer"></div>
-
-            <div class="fact-display hidden" id="factDisplay">
-                <div class="fact-icon">💡</div>
-                <div class="fact-text" id="factText"></div>
+            <div id="questionText" class="title" style="font-size: 18px; text-align: left; margin-bottom: 20px;">Loading question...</div>
+            <div id="optionsContainer" class="button-group"></div>
+            <div id="factDisplay" class="info-card" style="display: none; margin-top: 20px; background: #fff3cd; border: 1px solid #ffeaa7;">
+                <p id="factText" style="font-size: 12px; color: #856404;"></p>
             </div>
         </div>
     </div>
 
-    <!-- Results Screen -->
-    <div id="resultsScreen" class="screen">
-        <div class="results-container">
-            <div class="trophy">🎉</div>
-            <h1 class="results-title">Quiz Complete!</h1>
-            
-            <div class="performance-message" id="performanceMessage">Great job!</div>
-            
-            <div class="leaderboard-position hidden" id="leaderboardPosition">
-                <div class="position-icon">🏆</div>
-                <div class="position-text">
-                    <span class="position-label">Your Rank:</span>
-                    <span class="position-value" id="userRank">#1</span>
-                    <span class="position-total" id="totalPlayers">of 10 players</span>
-                </div>
-            </div>
-
-            <div class="final-score-box">
-                <div class="score-label">Your Score</div>
-                <div class="final-score">
-                    <span id="finalScore">0</span><span class="score-max">/200</span>
-                </div>
-            </div>
-
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon">✓</div>
-                    <div class="stat-label">Correct</div>
-                    <div class="stat-value" id="correctAnswersDisplay">0/20</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">📊</div>
-                    <div class="stat-label">Accuracy</div>
-                    <div class="stat-value" id="accuracyDisplay">0%</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">⏱️</div>
-                    <div class="stat-label">Time</div>
-                    <div class="stat-value" id="totalTimeDisplay">0s</div>
-                </div>
-            </div>
-
-            <div class="action-buttons">
-                <button class="button button-primary" id="playAgainBtn">Play Again</button>
-                <button class="button button-secondary" id="viewLeaderboardResultsBtn">View Leaderboard</button>
-                <button class="button button-secondary" id="shareScoreBtn">Share Score</button>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
