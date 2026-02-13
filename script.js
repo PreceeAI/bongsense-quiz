@@ -216,7 +216,6 @@ async function fetchAndAppendLeaderboard(topicKey, container) {
     }
 
     try {
-        // Fetch ALL entries and sort client-side (more reliable than server queries)
         const snap = await database.ref(`leaderboards/${topicKey}`).once('value');
         const data = [];
         snap.forEach(c => {
@@ -226,18 +225,22 @@ async function fetchAndAppendLeaderboard(topicKey, container) {
             }
         });
         
-        console.log('📋 Fetched entries:', data.length);
+        // Show total participant count at the top
+        const countDiv = document.createElement('div');
+        countDiv.style.cssText = "font-size: 12px; color: #888; margin-bottom: 15px; font-weight: 600;";
+        countDiv.textContent = `TOTAL PARTICIPANTS: ${data.length}`;
+        container.appendChild(countDiv);
         
         if (data.length === 0) {
             container.innerHTML += '<p style="color: #888; font-size: 13px; padding: 10px;">No scores yet. Be the first!</p>';
             return;
         }
 
-        // Sort by score descending, take top 10
+        // Sort by score descending and take the top 30
         data.sort((a, b) => b.score - a.score);
-        const top10 = data.slice(0, 10);
+        const top30 = data.slice(0, 30);
 
-        top10.forEach((entry, i) => {
+        top30.forEach((entry, i) => {
             const medals = ['🥇', '🥈', '🥉'];
             const prefix = i < 3 ? medals[i] : `#${i + 1}`;
             const div = document.createElement('div');
@@ -247,7 +250,7 @@ async function fetchAndAppendLeaderboard(topicKey, container) {
         });
     } catch (e) {
         console.error('Leaderboard fetch error:', e);
-        container.innerHTML += `<p style="color: #e74c3c; font-size: 13px; padding: 10px;">⚠️ Failed to load leaderboard.<br><small>${e.message}</small></p>`;
+        container.innerHTML += `<p style="color: #e74c3c; font-size: 13px; padding: 10px;">⚠️ Failed to load leaderboard.</p>`;
     }
 }
 
