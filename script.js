@@ -164,12 +164,14 @@ async function finishGame() {
     if (firebaseInitialized && currentUsername) {
         try {
             const dbRef = database.ref(`leaderboards/${topicKey}`);
-            // 1. Push score
-            await dbRef.push({
+            
+            // 1. Push score and wait for confirmation
+            const newRef = await dbRef.push({
                 username: currentUsername,
                 score: score,
                 timestamp: Date.now()
             });
+            console.log('✅ Score saved:', newRef.key);
 
             // 2. Fetch all scores to calculate rank
             const snap = await dbRef.orderByChild('score').once('value');
@@ -178,10 +180,11 @@ async function finishGame() {
             
             // 3. Sort descending and find rank
             allScores.sort((a, b) => b - a);
-            rank = allScores.indexOf(score) + 1;
+            const foundIdx = allScores.indexOf(score);
+            rank = foundIdx >= 0 ? foundIdx + 1 : "N/A";
         } catch (e) { 
-            console.error("Firebase Sync Error:", e); 
-            rank = "Error";
+            console.error("Firebase Sync Error:", e.code, e.message); 
+            rank = "⚠️ Save failed";
         }
     }
 
