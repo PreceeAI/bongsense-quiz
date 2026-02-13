@@ -17,10 +17,22 @@ function initFirebase() {
         if (typeof firebase !== 'undefined') {
             firebase.initializeApp(firebaseConfig);
             database = firebase.database();
+            // Monitor connection state
+            database.ref('.info/connected').on('value', (snap) => {
+                if (snap.val() === true) {
+                    console.log('✅ Firebase Connected');
+                } else {
+                    console.log('⚠️ Firebase Disconnected');
+                }
+            });
             firebaseInitialized = true;
-            console.log('✅ Global Firebase Connected');
+        } else {
+            console.error('❌ Firebase SDK not loaded');
         }
-    } catch (e) { console.error('❌ Firebase Error:', e); }
+    } catch (e) { 
+        console.error('❌ Firebase Error:', e); 
+        firebaseInitialized = false;
+    }
 }
 
 initFirebase();
@@ -44,9 +56,13 @@ function showScreen(screenId) {
 async function loadQuestions() {
     try {
         const res = await fetch('questions.json');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         quizData = await res.json();
         document.getElementById('topicBadge').textContent = `Topic: ${quizData.topic}`;
-    } catch (e) { console.error('Failed to load questions:', e); }
+    } catch (e) { 
+        console.error('Failed to load questions:', e); 
+        document.getElementById('topicBadge').textContent = 'Error loading quiz';
+    }
 }
 
 function prepareGame() {
@@ -92,11 +108,22 @@ function startQuestion() {
 function startTimer() {
     let timeLeft = 20;
     clearInterval(timerInterval);
+    
+    const timerEl = document.getElementById('timerDisplay');
+    timerEl.textContent = `⏱ ${timeLeft}s`;
+    timerEl.style.color = '#764ba2';
+
     timerInterval = setInterval(() => {
         timeLeft--;
+        timerEl.textContent = `⏱ ${timeLeft}s`;
+        
+        if (timeLeft <= 5) {
+            timerEl.style.color = '#e74c3c';
+        }
+        
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
-            handleAnswer(-1, -1, 0, "Time is up!");
+            handleAnswer(-1, -1, 0, "⏰ Time's up!");
         }
     }, 1000);
 }
@@ -152,10 +179,13 @@ async function finishGame() {
             // 3. Sort descending and find rank
             allScores.sort((a, b) => b - a);
             rank = allScores.indexOf(score) + 1;
-        } catch (e) { console.error("Sync Error:", e); }
+        } catch (e) { 
+            console.error("Firebase Sync Error:", e); 
+            rank = "Error";
+        }
     }
 
-    // Redirect to a Results view (using Leaderboard container for simplicity)
+    // Show results
     const list = document.getElementById('leaderboardList');
     list.innerHTML = `
         <div style="padding: 20px; background: #f0f4ff; border-radius: 15px; margin-bottom: 20px;">
@@ -163,33 +193,55 @@ async function finishGame() {
             <p style="font-size: 24px; font-weight: 800;">Score: ${score}/200</p>
             <p style="font-size: 18px; font-weight: 600; color: #667eea;">Global Rank: #${rank}</p>
         </div>
-        <p style="font-size: 14px; color: #666; margin-bottom: 15px;">Check the full leaderboard below:</p>
+        <p style="font-size: 14px; color: #666; margin-bottom: 15px;">Top 10 Leaderboard:</p>
     `;
     
-    // Show full leaderboard after the summary
     await fetchAndAppendLeaderboard(topicKey, list);
     showScreen('leaderboardScreen');
 }
 
 async function fetchAndAppendLeaderboard(topicKey, container) {
-    if (firebaseInitialized) {
+    if (!firebaseInitialized) {
+        container.innerHTML += '<p style="color: #e74c3c; font-size: 13px; padding: 10px;">⚠️ Could not connect to leaderboard. Check your internet connection.</p>';
+        return;
+    }
+
+    try {
         const snap = await database.ref(`leaderboards/${topicKey}`).orderByChild('score').limitToLast(10).once('value');
         const data = [];
         snap.forEach(c => data.push(c.val()));
+        
+        if (data.length === 0) {
+            container.innerHTML += '<p style="color: #888; font-size: 13px; padding: 10px;">No scores yet. Be the first!</p>';
+            return;
+        }
+
         data.reverse().forEach((entry, i) => {
+            const medals = ['🥇', '🥈', '🥉'];
+            const prefix = i < 3 ? medals[i] : `#${i + 1}`;
             const div = document.createElement('div');
             div.className = 'leaderboard-entry';
-            div.innerHTML = `<span class="entry-name">${entry.username}</span><span class="entry-score">${entry.score}</span>`;
+            div.innerHTML = `<span class="entry-name">${prefix} ${entry.username}</span><span class="entry-score">${entry.score}</span>`;
             container.appendChild(div);
         });
+    } catch (e) {
+        console.error('Leaderboard fetch error:', e);
+        container.innerHTML += `<p style="color: #e74c3c; font-size: 13px; padding: 10px;">⚠️ Failed to load leaderboard.<br><small style="word-break:break-all;">${e.message}</small></p>`;
     }
 }
 
 async function showLeaderboard() {
     const list = document.getElementById('leaderboardList');
-    list.innerHTML = 'Loading...';
+    list.innerHTML = '<p style="color: #888; padding: 20px;">Loading...</p>';
     showScreen('leaderboardScreen');
+    
+    if (!quizData) {
+        list.innerHTML = '<p style="color: #e74c3c; padding: 20px;">Quiz data not loaded yet.</p>';
+        return;
+    }
+    
     const topicKey = quizData.topic.replace(/\s+/g, '_');
+    list.innerHTML = ''; // Clear "Loading..." before appending entries
     await fetchAndAppendLeaderboard(topicKey, list);
 }
 
@@ -206,6 +258,13 @@ document.getElementById('continueBtn').addEventListener('click', () => {
         prepareGame();
     } else {
         alert('Please enter your name');
+    }
+});
+
+// Allow Enter key on username input
+document.getElementById('usernameInput').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        document.getElementById('continueBtn').click();
     }
 });
 
